@@ -22,9 +22,8 @@ public class Clientes {
 
     static List<Clientes> clientes = new LinkedList<Clientes>();
 
-    /*public static void String agregarCliente(String nombre, String dni){
+    public static void agregarCliente(String nombre, String dni){
         clientes.add(new Clientes(nombre, dni));
-        System.out.println("HOLa");
-    }*/
+    }
 
 }
