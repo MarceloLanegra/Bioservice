@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 import static Modulos.Clientes.agregarCliente;
 import static Modulos.Clientes.clientes;
+import static Modulos.PedidosCompra.pedidosCompras;
 import static Modulos.Productos.*;
+import static Modulos.PedidosCompra.agregarPedidoCompra;
 
 public class ventas {
 
@@ -32,7 +34,7 @@ public class ventas {
 
             System.out.print("Nombre del producto? ");
             String prodNombre = sc.next();
-            consultarProducto(prodNombre);
+            consultarProducto(prodNombre,dni);
 
             System.out.print("Desea salir del programa? ");
             String confirma = sc.next();
@@ -67,7 +69,7 @@ public class ventas {
         return bienvenida;
     }
 
-    public static void consultarProducto(String nombre){
+    public static void consultarProducto(String nombre, String dni){
         nombre = nombre.toUpperCase(Locale.ROOT);
 
         for (Productos p : productos){
@@ -81,12 +83,18 @@ public class ventas {
                     int cant = sc.nextInt();
                     int cantActu = p.getStock() - cant;
                     actualizarStock(nombre,cantActu);
+                    agregarPedidoCompra(dni,nombre, cant,"Por despachar");
+                    System.out.println("Pedido de compra creado.");
                 }
             }
         }
 
-        for (Productos pr : productos){
+        /*for (Productos pr : productos){
             System.out.println(pr.getNombreProducto()+" "+pr.getStock()+" "+pr.getEstado());
+        }*/
+
+        for (PedidosCompra pc : pedidosCompras){
+            System.out.println(pc.getIdPedido()+" "+pc.getDniCli()+" "+pc.getNomCli()+" "+pc.getProd()+" "+ pc.getCant()+" "+pc.getEstado());
         }
     }
 }
