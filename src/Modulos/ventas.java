@@ -1,20 +1,25 @@
 package Modulos;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static Modulos.Clientes.agregarCliente;
 import static Modulos.Clientes.clientes;
-
+import static Modulos.Productos.*;
 
 public class ventas {
 
 
     public static void main(String[] args) {
         clientes.add(new Clientes("Marcelo", "76282422"));
-        clientes.add(new Clientes("John", "000000"));
+        clientes.add(new Clientes("John", "12345678"));
 
-        /*for(Clientes c : clientes) {
-            System.out.println(c.getNombre() + " committed " + c.getDni());
-        }*/
+        productos.add(new Productos("JABON", 70, "Disponible"));
+        productos.add(new Productos("ABONO", 60, "Disponible"));
+        productos.add(new Productos("LAVAVAJILLA", 40, "No disponible"));
+        productos.add(new Productos("SHAMPOO", 15, "No disponible"));
+        productos.add(new Productos("ENERGIZANTES", 80, "Disponible"));
+        productos.add(new Productos("VITAMINA-C", 35, "No disponible"));
+
         boolean termino = false;
 
         while (termino == false){
@@ -27,7 +32,7 @@ public class ventas {
 
             System.out.print("Nombre del producto? ");
             String prodNombre = sc.next();
-            System.out.println(consultarProducto(prodNombre););
+            consultarProducto(prodNombre);
 
             System.out.print("Desea salir del programa? ");
             String confirma = sc.next();
@@ -63,6 +68,25 @@ public class ventas {
     }
 
     public static void consultarProducto(String nombre){
+        nombre = nombre.toUpperCase(Locale.ROOT);
 
+        for (Productos p : productos){
+            if(nombre.equals(p.getNombreProducto())){
+                int idx = productos.indexOf(p);
+                System.out.println(idx);
+                if (p.getStock()>50) {
+                    System.out.println("Producto disponible");
+                    Scanner sc = new Scanner(System.in);
+                    System.out.print("Cantidad a comprar: ");
+                    int cant = sc.nextInt();
+                    int cantActu = p.getStock() - cant;
+                    actualizarStock(nombre,cantActu);
+                }
+            }
+        }
+
+        for (Productos pr : productos){
+            System.out.println(pr.getNombreProducto()+" "+pr.getStock()+" "+pr.getEstado());
+        }
     }
 }
