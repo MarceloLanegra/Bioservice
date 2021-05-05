@@ -2,10 +2,12 @@ package Modulos;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static Modulos.Clientes.clientes;
 
 public class PedidosCompra {
+    private static final AtomicInteger cont = new AtomicInteger(0);
     private int idPedido;
     private String dniCli;
     private String nomCli;
@@ -13,8 +15,9 @@ public class PedidosCompra {
     private int cant;
     private String estado;
 
-    public PedidosCompra(int idPedido, String dniCli, String nomCli, String prod, int cant, String estado){
-        this.idPedido = idPedido;
+    public PedidosCompra(AtomicInteger cont, String dniCli, String nomCli, String prod, int cant, String estado){
+        //this.idPedido = idPedido;
+        this.idPedido = cont.incrementAndGet();
         this.dniCli = dniCli;
         this.nomCli = nomCli;
         this.prod = prod;
@@ -49,15 +52,15 @@ public class PedidosCompra {
     static List<PedidosCompra> pedidosCompras = new LinkedList<>();
 
     public static void agregarPedidoCompra(String dniCli, String prod, int cant, String estado){
-        int id = 1;
+
         String nomCli = "";
         for (Clientes c : clientes){
             if(dniCli.equals(c.getDni())){
                 nomCli = c.getNombre();
             }
         }
-        pedidosCompras.add(new PedidosCompra(id, dniCli, nomCli, prod, cant, estado));
 
-        id++;
+        pedidosCompras.add(new PedidosCompra(cont,dniCli, nomCli, prod, cant, estado));
     }
+
 }
