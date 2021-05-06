@@ -4,26 +4,19 @@ import java.util.Scanner;
 
 import static Modulos.Clientes.agregarCliente;
 import static Modulos.Clientes.clientes;
-import static Modulos.PedidosCompra.pedidosCompras;
 import static Modulos.Productos.*;
 import static Modulos.PedidosCompra.agregarPedidoCompra;
 
 public class ventas {
 
-
-    //public static void main(String[] args) {
     public static void ventasPrincipal(){
 
+        System.out.println("---------------------- Módulo de ventas ----------------------");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese dni del cliente: ");
+        String dni = sc.next();
 
-        //boolean termino = false;
-
-        /*while (termino == false){
-            System.out.println("");
-            System.out.println("------------------------- Bienvenido -------------------------");
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Ingrese dni del cliente: ");
-            String dni = sc.next();
-
+        if (dni.length()==8){
             System.out.println("");
             System.out.println(bienvenida(dni));
             System.out.println("");
@@ -31,31 +24,9 @@ public class ventas {
             System.out.print("Nombre del producto? ");
             String prodNombre = sc.next();
             consultarProducto(prodNombre,dni);
-
-            System.out.print("Desea salir del programa? ");
-            String confirma = sc.next();
-            if (confirma.equals("si")){
-                termino = true;
-            }
-        }*/
-
-        System.out.println("---------------------- Módulo de ventas ----------------------");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Ingrese dni del cliente: ");
-        String dni = sc.next();
-
-        System.out.println("");
-        System.out.println(bienvenida(dni));
-        System.out.println("");
-
-        System.out.print("Nombre del producto? ");
-        String prodNombre = sc.next();
-        consultarProducto(prodNombre,dni);
-
-
-        /*for (Clientes d : clientes){
-            System.out.println(d.getNombre()+" "+d.getDni());
-        }*/
+        }else{
+            System.out.println("DNI incorrecto");
+        }
     }
 
     public static String bienvenida(String dni){
@@ -71,6 +42,7 @@ public class ventas {
 
         if (existe == false){
             Scanner sc = new Scanner(System.in);
+            System.out.println("Cliente no registrado.");
             System.out.print("Ingrese nombre y apellido del nuevo cliente: ");
             String nombre = sc.next();
             agregarCliente(nombre,dni);
@@ -79,35 +51,38 @@ public class ventas {
         return bienvenida;
     }
 
-    public static void consultarProducto(String nombre, String dni){
+    public static void consultarProducto(String nombre, String dni) {
         nombre = nombre.toUpperCase(Locale.ROOT);
+        boolean existe = false;
 
-        for (Productos p : productos){
-            if(nombre.equals(p.getNombreProducto())){
+        for (Productos p : productos) {
+            if (nombre.equals(p.getNombreProducto())) {
+                existe = true;
                 int idx = productos.indexOf(p);
                 //System.out.println(idx);
-                if (p.getStock()>50) {
+                if (p.getStock() > 50) {
                     System.out.println("Producto disponible");
                     Scanner sc = new Scanner(System.in);
                     System.out.print("Cantidad a comprar: ");
                     int cant = sc.nextInt();
                     int cantActu = p.getStock() - cant;
-                    actualizarStock(nombre,cantActu);
-                    agregarPedidoCompra(dni,nombre, cant,"Por despachar");
+                    actualizarStock(nombre, cantActu);
+                    agregarPedidoCompra(dni, nombre, cant);
+                    if (p.getStock() <= 50) {
+                        p.setEstado(estado4);
+                    }
                     System.out.println("");
                     System.out.println("Pedido de compra creado.");
                     System.out.println("Enviado a almacén para su despacho.");
                     System.out.println("Gracias por su compra.");
+                } else {
+                    System.out.println("Producto no disponible para la venta.");
                 }
             }
+
         }
-
-        /*for (PedidosCompra pc : pedidosCompras){
-            System.out.println("ID PC "+pc.getIdPedido()+" || DNI "+pc.getDniCli()+"   Nombre cliente: "+pc.getNomCli()+" || Producto: "+pc.getProd()+"   Cant: "+ pc.getCant()+" || Estado: "+pc.getEstado());
-        }*/
-
-        /*for (Productos pr : productos){
-            System.out.println(pr.getNombreProducto()+" "+pr.getStock()+" "+pr.getEstado());
-        }*/
+        if (existe == false) {
+            System.out.println("Producto no existe.");
+        }
     }
 }

@@ -49,9 +49,16 @@ public class PedidosCompra {
         return estado;
     }
 
+    public void setEstado(String estado){
+        this.estado = estado;
+    }
+
     static List<PedidosCompra> pedidosCompras = new LinkedList<>();
 
-    public static void agregarPedidoCompra(String dniCli, String prod, int cant, String estado){
+    static String estado1 = "Por atender";
+    static String estado2 = "Atendido";
+
+    public static void agregarPedidoCompra(String dniCli, String prod, int cant){
 
         String nomCli = "";
         for (Clientes c : clientes){
@@ -60,7 +67,7 @@ public class PedidosCompra {
             }
         }
 
-        pedidosCompras.add(new PedidosCompra(cont,dniCli, nomCli, prod, cant, estado));
+        pedidosCompras.add(new PedidosCompra(cont,dniCli, nomCli, prod, cant, estado1));
     }
 
 }
